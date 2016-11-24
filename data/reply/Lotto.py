@@ -63,7 +63,8 @@ def getAnswer(full_text, params):
         #tmp_re = re.compile('[0-9]{1,2} 월 [0-9]{1,2} (일)?')
         #tmp = tmp_re.findall(full_text).split(' ')
         tmp = [x.split(' ') for x in date_info]
-        d = [dt.date(today_date.year(),int(x[2]),int(x[4])) for x in tmp]
+        print tmp
+        d = [dt.date(today_date.year, int(x[0]),int(x[2])) for x in tmp]
         pred_round.extend([get_round_from_date(x) for x in d])
     elif len(round_info) > 0:
         #tmp_re = re.compile('[0-9]{3}')
