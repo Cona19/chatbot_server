@@ -200,6 +200,8 @@ class ParamExtr(object):
         res = []
         for each in  d['hits']['hits']:
             res.append((each['_source']['name'], each['_score']))
+        if len(res) <= 0:
+            return []
         maxv = res[0][1]
         return [(x[0], x[1]/maxv) for x in res]
 
