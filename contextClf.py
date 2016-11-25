@@ -83,12 +83,14 @@ class ContextClf(object):
 
         #Search best model
         svc_param = {'C':np.logspace(-2, 0, 20)}
-        gs_svc = GridSearchCV(LinearSVC(),svc_param,cv=5,n_jobs=12)
+        print 'build start!'
+        gs_svc = GridSearchCV(LinearSVC(),svc_param,cv=5,n_jobs=8)
         gs_svc.fit(Xlist, Ylist)
         #logging.debug(gs_svc.best_params_)
         #logging.debug('score : ' + str(gs_svc.best_score_))
         print gs_svc.best_params_
         print 'score : ' + str(gs_svc.best_score_)
+        print 'make model using C parameter...'
         svm = LinearSVC(C=gs_svc.best_params_['C'])
         self.clfModel = CalibratedClassifierCV(base_estimator=svm)
 

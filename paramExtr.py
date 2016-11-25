@@ -55,8 +55,6 @@ class ParamExtr(object):
             joblib.dump(self.indvW2VM, ut.rp("paramExtr/indvW2V.model"))
         if self.reprDict != None:
             joblib.dump(self.reprDict, ut.rp("paramExtr/reprDict.dat"))
-        if self.allW2VM != None:
-            joblib.dump(self.allW2VM, ut.rp("paramExtr/allW2V.model"))
         if self.distMethods != None:
             joblib.dump(self.distMethods, ut.rp("paramExtr/distMethods.dat"))
 
@@ -85,15 +83,16 @@ class ParamExtr(object):
         sentences = []
         for v in allCorpus.values():
             sentences.extend([ut.replNum(ut.parseSentence(x)).split(' ') for x in v])
-        self.allW2VM = gensim.models.Word2Vec(sentences, min_count=1, size=100, workers=12)
-        self.save()
+        self.allW2VM = gensim.models.Word2Vec(sentences, min_count=1, size=100, workers=8)
+        if self.allW2VM != None:
+            joblib.dump(self.allW2VM, ut.rp("paramExtr/allW2V.model"))
 
     def _buildIndvW2VM(self, cat, corpus):
         """
         Build the category's word2vec model using corpus
         """
         sentences = [ut.replNum(ut.parseSentence(x)).split(' ') for x in corpus]
-        self.indvW2VM[cat] = gensim.models.Word2Vec(sentences, min_count=1, size=100, workers=12)
+        self.indvW2VM[cat] = gensim.models.Word2Vec(sentences, min_count=1, size=100, workers=8)
         self.save()
 
     def _buildES(self, cat, feat, reprList):
@@ -115,7 +114,7 @@ class ParamExtr(object):
             }
             actionList.append(action)
 
-        for success, info in helpers.parallel_bulk(es_client, actionList,chunk_size=200,thread_count=12):
+        for success, info in helpers.parallel_bulk(es_client, actionList,chunk_size=200,thread_count=8):
             print success, info
 
         self.save()
