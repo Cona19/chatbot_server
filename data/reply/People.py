@@ -212,7 +212,7 @@ class PeopleCrawler(object):
         if any([x.decode('utf-8') in detail_str for x in ['소속사', '소속', '경력']]):
             res_list.append(self.make_management_sen(res))
 
-        if any([x.decode('utf-8') in detail_str for x in ['상', '수상', '경력']]):
+        if any([x.decode('utf-8') in detail_str for x in ['수상', '경력']]):
             res_list.append(self.make_prize_sen(res))
 
         if any([x.decode('utf-8') in detail_str for x in ['학교', '초등학교', '중학교', '고등학교', '대학교', '학력']]):
