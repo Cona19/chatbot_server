@@ -179,7 +179,7 @@ if __name__ == '__main__':
     """
     This part is just Test Code
     """
-    useLoad = True
+    useLoad = False
     test = Handler(useLoad)
     print "Handler Load complete"
     if not useLoad:
@@ -264,7 +264,6 @@ if __name__ == '__main__':
                 fp.close()
                 start_time = time.time()
                 test.addCategory(k, 'Desc: ' + k, defDict[k], weatherReprDict, ''.join(code), {'when':'w', 'where':'w', 'what':'w', 'detail':'w'})
-                test.build()
                 end_time = time.time()
                 print 'weather add category elapsed time : ' + str(end_time - start_time)
 
@@ -285,7 +284,8 @@ if __name__ == '__main__':
     #end_time = time.time()
     #print 'People RemoveCategory elapsed time : ' + str(end_time - start_time)
     #print test.reply(u"2016년 11월 11일 로또번호", test_print)
-    print test.reply(u"우병우 프로필", test_print)
+    tmp = test.reply(u"우병우 프로필", test_print)
+    print tmp
     #print test.reply(u"저저번주 로또번호", test_print)
     #print test.reply(u"서석고등학교", test_print)
     #print test.reply("어제 로또 번호", test_print)
