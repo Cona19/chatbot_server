@@ -230,6 +230,8 @@ if __name__ == '__main__':
                 defDict[k].append('최순실 결혼했나요???')
                 defDict[k].append('요즘 화제가 되고 있는 최순실에 대해 알려주세요')
                 defDict[k].append('비선실세 최순실에 대해 알려주세요')
+                defDict[k].insert(0, '이명박은 어디 학교 나왔나요')
+                defDict[k].insert(0, '심은하가 누구죠?')
 
                 fp=open(ut.rp('reply/People.py'))
                 code = []
@@ -248,6 +250,8 @@ if __name__ == '__main__':
                     for w in each['result']:
                         lottoReprDict[w].extend(each['result'][w])
 
+                defDict[k].insert(0, '저번주 로또 번호가 몇번이죠?')
+                defDict[k].insert(0, '712회 로또 번호 알려주세요')
                 fp=open(ut.rp('reply/Lotto.py'))
                 code = []
                 for line in fp:
@@ -263,6 +267,8 @@ if __name__ == '__main__':
                     for w in each['result']:
                         weatherReprDict[w].extend(each['result'][w])
                 weatherReprDict['where'].remove('날씨')
+                defDict[k].insert(0, '이번주 토요일 서울 날씨')
+                defDict[k].insert(0, '지금 부산 비오나요')
 
                 fp = open(ut.rp('reply/Weather.py'))
                 code = []
