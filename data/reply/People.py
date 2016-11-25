@@ -142,7 +142,7 @@ class PeopleCrawler(object):
         else:
             who_str = ''
         if parsed_dict.has_key('detail'):
-            detail_str = ''.join(parsed_dict['detail'])
+            detail_str = full_text#''.join(parsed_dict['detail'])
         else:
             detail_str = ''
         u = 'http://people.search.naver.com/search.naver?sm=sbx_hty&where=nexearch&ie=utf8&query=' + who_str + '&x=0&y=0'
