@@ -237,7 +237,7 @@ if __name__ == '__main__':
                     code.append(line)
                 fp.close()
                 start_time =time.time()
-                test.addCategory(k, 'Desc: ' + k, defDict[k], peopleReprDict, ''.join(code), {'who':'w', 'detail':'w'})
+                test.addCategory(k, '인물 검색 기능', defDict[k], peopleReprDict, ''.join(code), {'who':'w', 'detail':'w'})
                 end_time =time.time()
                 print 'People AddCategory elapsed time : ' + str(end_time - start_time)
             elif k == 'Lotto':
@@ -254,7 +254,7 @@ if __name__ == '__main__':
                     code.append(line)
                 fp.close()
 
-                test.addCategory(k, 'Desc: ' + k, defDict[k], lottoReprDict, ''.join(code), {'when':'w'})
+                test.addCategory(k, '로또 번호 검색 및 추천 기능', defDict[k], lottoReprDict, ''.join(code), {'when':'w'})
             elif k == 'Weather':
                 weatherTestDataRaw = joblib.load(ut.rp('paramExtr/cate-weather.dat'))
 
@@ -270,7 +270,7 @@ if __name__ == '__main__':
                     code.append(line)
                 fp.close()
                 start_time = time.time()
-                test.addCategory(k, 'Desc: ' + k, defDict[k], weatherReprDict, ''.join(code), {'when':'w', 'where':'w', 'what':'w', 'detail':'w'})
+                test.addCategory(k, '현재 날씨 및 예보 기능', defDict[k], weatherReprDict, ''.join(code), {'when':'w', 'where':'w', 'what':'w', 'detail':'w'})
                 end_time = time.time()
                 print 'weather add category elapsed time : ' + str(end_time - start_time)
 
@@ -283,7 +283,8 @@ if __name__ == '__main__':
     print "build complete"
     def test_print(a,b):
         print a + " : " + unicode(b)
-    #print test.reply("내일 서울 날씨좀요", test_print)
+    #print test.reply("내일 서울 비 오나요", test_print)
+    print test.reply("진달래꽃 노래 전부", test_print)
     #print test.reply("노래방", test_print)
     #start_time = time.time()
     #test.removeCategory('People')
@@ -291,8 +292,8 @@ if __name__ == '__main__':
     #end_time = time.time()
     #print 'People RemoveCategory elapsed time : ' + str(end_time - start_time)
     #print test.reply(u"2016년 11월 11일 로또번호", test_print)
-    tmp = test.reply(u"서라벌고 내일 급식", test_print)
-    print tmp
+    #tmp = test.reply(u"서라벌고 내일 급식", test_print)
+    #print tmp
     #print test.reply(u"저저번주 로또번호", test_print)
     #print test.reply(u"서석고등학교", test_print)
     #print test.reply("어제 로또 번호", test_print)
