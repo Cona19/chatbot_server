@@ -24,6 +24,7 @@ class WeatherClass:
         self.clouds = 0
         self.lat = 0.0
         self.lng = 0.0
+        self.is_rain = False
 
     def getUrlForGeoCoord(self, region_name):
         api_key = "AIzaSyAvwmpQfZtYtN0HkbM7IDiLJRcWzIs9QPI"
@@ -98,7 +99,7 @@ class WeatherClass:
 
 class ForecastWeather:
     def __init__(self):
-        pass
+            self.is_rain = False
 
     def getUrlForGeoCoord(self, region_name):
             api_key = "AIzaSyAvwmpQfZtYtN0HkbM7IDiLJRcWzIs9QPI"
@@ -146,6 +147,9 @@ class ForecastWeather:
             afterdaytomorrow = self.getDateFuture(day_after+1)
 
             st = []
+            sum_rain = 0.0
+            avg_rain = 0.0
+            cnt = 0.0
             for each in json_list['list']:
                 original_dt = datetime.datetime.strptime(str(each['dt_txt']), '%Y-%m-%d %H:%M:%S')
                 changed_dt = original_dt - datetime.timedelta(hours=-9)
@@ -157,7 +161,15 @@ class ForecastWeather:
                     st.append("풍속 : " + str(each['wind']['speed']) + " m/s")
                     st.append("강수 확률 : " + str(each['clouds']['all']) + " %")
                     st.append(" ")
-
+                    sum_rain += each['clouds']['all']
+                    cnt += 1.0
+            
+            avg_rain = sum_rain / cnt
+            if avg_rain > 40:
+                self.is_rain = True
+            else:
+                self.is_rain = False
+                
             if len(st) == 0:
                 return '좀 더 정확히 입력해 주세요'
             return '\n'.join(st)
@@ -230,7 +242,19 @@ def getAnswer(question, params):
             where = where.decode('utf-8')
         if type(tmp) is not unicode:
             tmp = tmp.decode('utf-8')
-        return where + u' 날씨 예보입니다.\n' + tmp
+        if type(what) is not unicode:
+            what = what.decode('utf-8')
+
+        print "what : " + what
+        rain_word = [u'비',u'강수',u'강수확률',u'강수량']
+        if what in rain_word:
+            if wf.is_rain:
+                result = where + u'에 비가 올 확률이 높습니다.\n' + tmp
+            else:
+                result = where + u'에 비가 올 확률이 낮습니다.\n' + tmp
+        else:
+            result = where + u' 날씨 예보입니다.\n' + tmp
+        return result
 
 
 def is_now(when):
@@ -272,3 +296,4 @@ def get_date_diff(when):
     d1 = date(cur_year, cur_month, cur_date)
     delta = d0 - d1
     return delta.days
+
