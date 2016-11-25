@@ -17,6 +17,7 @@ class Handler(object):
         Handler constructor
         Initialize each variables used in this instance
         """
+        self.isBuilding = False
         if useLoad:
             self.load()
         else:
@@ -68,9 +69,7 @@ class Handler(object):
         """
         add new category's corpus in allcorpus
         """
-        if cat not in self.allCorpus:
-            self.allCorpus[cat] = []
-        self.allCorpus[cat].extend(corpus)
+        self.allCorpus[cat] = corpus
         return True
 
     def _removeCorpus(self, cat):
@@ -88,25 +87,25 @@ class Handler(object):
 	    cat = cat.decode('utf-8')
 	if type(desc) is not unicode:
 	    desc = desc.decode('utf-8')
-	for idx in range(len(quesCorpus)):
-	    if type(quesCorpus[idx]) is not unicode:
-		quesCorpus[idx] = quesCorpus[idx].decode('utf-8')
+        quesCorpus = [x if type(x) is unicode else x.decode('utf-8') for x in quesCorpus]
 	for k in reprDict.keys():
-	    for idx in range(len(reprDict[k])):
-		if type(reprDict[k][idx]) is not unicode:
-		    reprDict[k][idx] = reprDict[k][idx].decode('utf-8')
+            reprDict[k] = [x if type(x) is unicode else x.decode('utf-8') for x in reprDict[k]]
 	if type(findCode) is not unicode:
 	    findCode = findCode.decode('utf-8')
 	for k in distMethod.keys():
 	    if type(distMethod[k]) is not unicode:
 		distMethod[k] = distMethod[k].decode('utf-8')
 
+        while self.isBuilding:
+            pass
+        self.isBuilding = True
         self.allInfo[cat] = {'name':cat, 'desc':desc, 'corpus':quesCorpus, 'reprDict':reprDict, 'findCode':findCode, 'distMethod':distMethod}
         self.descs.append({'name':cat, 'desc':desc, 'corpus':[quesCorpus[0], quesCorpus[1]]})
         self.saveCode(cat, findCode)
         self._addCorpus(cat, quesCorpus)
         self.paramExtr.build(cat, quesCorpus, reprDict, distMethod)
         self.save()
+        self.isBuilding = False
         return True
 
     def removeCategory(self, cat):
@@ -129,7 +128,11 @@ class Handler(object):
         """
         Build context classifier model
         """
+        while self.isBuilding:
+            pass
+        self.isBuilding = True
         self.contextClf.build(self.allCorpus)
+        self.isBuilding = False
         return True
 
     def reply(self, ques, emitFunc):
@@ -138,6 +141,10 @@ class Handler(object):
         """
         if type(ques) is not unicode:
             ques = ques.decode('utf-8')
+        if self.isBuilding:
+            emitFunc('error', u'학습 모델을 생성하고 있습니다. 잠시만 기다려주세요')
+            while self.isBuilding:
+                pass
         #Classify the category of the question
         predRslt = self._predContext(ques)
         #Emit context classifier's reseult
@@ -284,7 +291,7 @@ if __name__ == '__main__':
     #end_time = time.time()
     #print 'People RemoveCategory elapsed time : ' + str(end_time - start_time)
     #print test.reply(u"2016년 11월 11일 로또번호", test_print)
-    tmp = test.reply(u"우병우 프로필", test_print)
+    tmp = test.reply(u"서라벌고 내일 급식", test_print)
     print tmp
     #print test.reply(u"저저번주 로또번호", test_print)
     #print test.reply(u"서석고등학교", test_print)
