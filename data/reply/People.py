@@ -93,14 +93,18 @@ class PeopleCrawler(object):
         except:
             return def_str
 
-    def make_height_sen(self, res, def_str='키 정보가 없습니다.\n'):
+    def make_height_sen(self, res, def_str='신장 정보가 없습니다.\n'):
         try:
+            if res['height'] == '0':
+                return '신장 정보가 없습니다'
             return "신장: {0}\n".format(res['height'].encode('utf-8'))
         except:
             return def_str
 
     def make_weight_sen(self, res, def_str='체중 정보가 없습니다.\n'):
         try:
+            if res['weight'] == '0':
+                return '체중 정보가 없습니다'
             return "체중: {0}\n".format(res['weight'].encode('utf-8'))
         except:
             return def_str
